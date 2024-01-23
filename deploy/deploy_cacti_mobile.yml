@@ -1,0 +1,22 @@
+- name: Deploy Cacti Tray Mobile
+  hosts: appserver
+  tasks:
+    - name: Create install directory
+      file:
+        state: directory
+        path: /var/www/cacti_mobile/
+        owner: "{{ app_user }}"
+        group: "{{ app_group }}"
+        mode: 0755
+    - name: Sync sources with remote host
+      ansible.posix.synchronize:
+        src: ../dist/
+        dest: /var/www/cacti_mobile/
+        delete: yes
+        recursive: yes
+        rsync_opts:
+          - "--chmod=F0644,D755"
+          - "--chown={{ app_user }}:{{ app_group }}"
+          - "--exclude-from='.deploy_ignore'"
+          - "--log-file='logs/sync.cacti.log'"
+          - "--no-motd"

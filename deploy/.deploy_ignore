@@ -1,0 +1,5 @@
+.git
+.secrets
+.htaccess
+Makefile
+node_modules/
