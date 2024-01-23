@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    [x-cloak] {
+      display: none !important;
+    }
+  </style>
+  <meta charset="utf-8">
+  <title>Cacti Tray Mobile</title>
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+
+  <link rel="manifest"
+        href="manifest.json">
+
+  <meta name="apple-mobile-web-app-capable"
+        content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style"
+        content="black">
+  <meta name="apple-mobile-web-app-title"
+        content="Cacti Tray Mobile">
+  <link rel="apple-touch-status-icon"
+        href="img/logo.svg">
+  <meta name="msapplication-TileImage"
+        content="img/cacti-192.png">
+  <meta name="msapplication-TileColor"
+        content="#369c62">
+  <link rel="shortcut status-icon"
+        type="image/png"
+        href="img/favicon.ico" />
+
+</head>
+
+<body>
+  <div id="app"
+       x-data="cacti"
+       x-init="update()"
+       class="container-fluid"
+       x-cloak>
+
+    <nav class="navbar navbar-light sticky-top bg-light">
+      <div class="container-fluid">
+        <div class="me-auto">
+          <a class="navbar-brand"
+             @click="update()"
+             href="#">Cacti <i class="fa-solid fa-rotate"></i></a><br>
+          <i class="fa-solid fa-circle-down text-danger"></i> <span x-text="countDownHosts">0</span>, <i
+             class="fa-solid fa-circle-up text-success"></i> <span x-text="countUpHosts">0</span>, <i
+             class="fa-solid fa-clock"></i> <span x-text="lastUpdated"></span>
+        </div>
+        <div class="ms-auto">
+          <button type="button"
+                  @click="toggleNotification()"
+                  class="btn btn-warning"><i :class="notification ? 'fa-regular fa-bell' : 'fa-regular fa-bell-slash'"></i></button>
+          <button type="button"
+                  @click="load()"
+                  data-bs-toggle="modal"
+                  data-bs-target="#myModal"
+                  class="btn btn-secondary"><i class="fa-solid fa-gear"></i></button>
+        </div>
+      </div>
+      <div class="container-fluid">
+        <div class="col pe-1">
+          <form action="#">
+            <div class="input-group">
+              <input id="filter"
+                     type="search"
+                     class="form-control form-control-dark"
+                     placeholder="Search..."
+                     aria-label="Search"
+                     autocomplete="off"
+                     x-model="hostFilterQuery">
+              <span class="input-group-text"
+                    x-text="countFilteredHosts"></span>
+            </div>
+          </form>
+        </div>
+        <div class="col-auto ps-1">
+          <button @click="toggleHosts()"
+                  type="button"
+                  class="btn btn-danger"><i class="fa-solid fa-circle-down"></i></button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="alert alert-danger my-3"
+         role="alert"
+         x-cloak
+         x-show="message"
+         x-text="message"></div>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="min"></th>
+          <th @click="sort('description')">Description</th>
+          <th class="min"
+              @click="sort('hostname')">Hostname</th>
+        </tr>
+      </thead>
+      <tbody>
+        <template x-for="host in filterHosts">
+          <tr>
+            <td x-html="`<svg class='status-icon'><use xlink:href='#host_status_${host.status}'></use></svg>`"></td>
+            <td x-text="host.description"></td>
+            <td x-text="host.hostname"></td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+
+    <i data-fa-symbol="host_status_0"
+       class="fa-solid fa-circle text-info"></i>
+    <i data-fa-symbol="host_status_1"
+       class="fa-solid fa-circle-down text-danger"></i>
+    <i data-fa-symbol="host_status_2"
+       class="fa-solid fa-circle text-info"></i>
+    <i data-fa-symbol="host_status_3"
+       class="fa-solid fa-circle-up text-success"></i>
+
+    <div id="myModal"
+         class="modal fade"
+         role="dialog"
+         tabindex="-1"
+         x-cloak>
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Settings</h5>
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="username"
+                     class="form-label"><i class="fa-solid fa-user"></i> Username</label>
+              <input type="text"
+                     class="form-control"
+                     id="username"
+                     x-model="username">
+            </div>
+            <div class="mb-3">
+              <label for="password"
+                     class="form-label"><i class="fa-solid fa-key"></i> Password</label>
+              <input type="password"
+                     class="form-control"
+                     id="password"
+                     x-model="password">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button @click="save()"
+                    type="button"
+                    class="btn btn-primary"
+                    data-bs-dismiss="modal">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

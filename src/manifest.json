@@ -1,0 +1,30 @@
+{
+    "short_name": "Cacti",
+    "name": "Cacti Tray Mobile",
+    "icons": [
+        {
+            "src": "img/cacti-96.png",
+            "type": "image/png",
+            "sizes": "96x96"
+        },
+        {
+            "src": "img/cacti-192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        },
+        {
+            "src": "img/cacti-512.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        },
+        {
+            "src": "img/cacti-1024.png",
+            "type": "image/png",
+            "sizes": "1024x1024"
+        }
+    ],
+    "start_url": "/cacti/",
+    "background_color": "#FFFFFF",
+    "display": "standalone",
+    "theme_color": "#369c62"
+}
